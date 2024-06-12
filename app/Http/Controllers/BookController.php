@@ -16,6 +16,8 @@ class BookController extends Controller
     {
         $title  = $request->input('title');
         $filter = $request->input('filter', '');
+        //$page   = $request->has('page') ? $request->query('page') : 1;
+        $page = $request->query('page') ?? 1;
 
         $books = Book::when($title, static function($query) use ($title) {
             return $query->title($title);
@@ -31,13 +33,17 @@ class BookController extends Controller
             'highest_rated_last_month'  => $books->highestRatedLastMonth(),
             'highest_rated_last_6month' => $books->highestRatedLast6Months(),
             default                     => $books->latest()
+                                                 ->withAvgRating()
+                                                 ->withReviewsCount()
         };
 
         //$books = $books->get();
 
-        $cacheKey = 'books:' . $filter . ':' . $title;
-        $books    = cache()->remember($cacheKey, 3600, function() use ($books) {
-            return $books->get();
+        //$books = $books->paginate(10);
+
+        $cacheKey = 'books:' . $filter . ':' . $title . ':' . $page;
+        $books    = Cache()->remember($cacheKey, 3600, function() use ($books) {
+            return $books->paginate(10);
         });
 
         //$books    = Cache::remember($cacheKey, 3600, static fn() => $books->get());
