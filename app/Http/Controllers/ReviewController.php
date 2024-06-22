@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class ReviewController extends Controller
 {
@@ -18,8 +23,16 @@ class ReviewController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Book $book)
+    public function create(Request $request, Book $book)
     {
+        var_dump($request->ip());
+
+        $hashKey     = $this->getRateLimiterKey('reviews', $request->ip());
+        $attempts    = RateLimiter::attempts($hashKey);
+        $retriesLeft = RateLimiter::retriesLeft($hashKey, 10);
+
+        dd($hashKey, $attempts, $retriesLeft);
+
         return view('books.reviews.create', [ 'book' => $book ]);
     }
 
@@ -28,14 +41,12 @@ class ReviewController extends Controller
      */
     public function store(Request $request, Book $book)
     {
-        $data = $request->validate([
-                                   'review' => 'required|min:15', 'rating' => 'required|min:1|max:5|integer'
-                                   ]);
+        $data = $request->validate([ 'review' => 'required|min:15',
+                                     'rating' => 'required|min:1|max:5|integer' ]);
 
-        $book->reviews()
-             ->create($data);
+        $book->reviews()->create($data);
 
-        return redirect()->route('books.show', ['book' => $book]);
+        return redirect()->route('books.show', [ 'book' => $book ]);
     }
 
     /**
@@ -68,5 +79,23 @@ class ReviewController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    function getRateLimiterKey($name, $key): string
+    {
+        // Hash the IP address using the same method Laravel uses internally
+        //return 'rate_limiter:' . sha1($name . '|' . $key);
+        return md5($name . $key);
+    }
+
+    function getRateLimiterAttempts($limiter, $key)
+    {
+        var_dump($limiter, $key);
+        // Create a unique key based on the limiter name and the given key
+        $hashedKey   = Str::slug($limiter, '-') . '|' . $key;
+        $rateLimiter = new RateLimiter(Cache::store(Config::get('cache.default')));
+
+        return $rateLimiter::attempts($hashedKey);
     }
 }

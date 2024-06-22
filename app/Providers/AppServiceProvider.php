@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        RateLimiter::for('reviews', function(Request $request) {
+            //return Limit::perMinutes(5, 10)->by(optional($request->user())->id ? : $request->ip())->response(function(Request $request,
+            return Limit::perMinutes(5, 10)->by($request->ip())->response(function(Request $request,
+                                                                                                                     array   $headers) {
+                return response('You have reached the limit of allowed reviews per 5 minutes. Remaining: ' .
+                                ($headers['X-RateLimit-Reset'] - time()) . ' seconds',
+                                429,
+                                $headers);
+            });
+        });
     }
 }

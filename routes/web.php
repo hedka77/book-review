@@ -8,9 +8,9 @@ Route::get('/', function() {
     return redirect()->route('books.index');
 });
 
-Route::Resource('books', BookController::class)
-     ->only([ 'index', 'show' ]);
+Route::Resource('books', BookController::class)->only([ 'index', 'show' ]);
 
-Route::Resource('books.reviews', ReviewController::class)
+Route::resource('books.reviews', ReviewController::class)
      ->scoped([ 'review' => 'book' ])
-     ->only([ 'create', 'store' ]);
+     ->only([ 'create', 'store' ])
+     ->middleware('throttle:reviews');
