@@ -48,7 +48,7 @@ class Book extends Model
     }
 
 
-    private function dateRangeBuilder(Builder $query, $from = null, $to = null)
+    private function dateRangeBuilder(Builder $query, $from = null, $to = null): void
     {
         if ($from && !$to)
         {
