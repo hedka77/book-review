@@ -23,24 +23,27 @@ class ReviewFactory extends Factory
                  'created_at' => fake()->dateTimeBetween('-2 years'),
                  'updated_at' => fake()->dateTimeBetween('created_at', 'now'), ];
     }
-    
+
     public function good(): ReviewFactory|Factory
     {
-        return $this->state(function(array $attributes) {
+        return $this->state(function(array $attributes)
+        {
             return [ 'rating' => fake()->numberBetween(4, 5), ];
         });
     }
-    
+
     public function average(): ReviewFactory|Factory
     {
-        return $this->state(function(array $attributes) {
+        return $this->state(function(array $attributes)
+        {
             return [ 'rating' => fake()->numberBetween(2, 4), ];
         });
     }
-    
+
     public function bad(): ReviewFactory|Factory
     {
-        return $this->state(function(array $attributes) {
+        return $this->state(function(array $attributes)
+        {
             return [ 'rating' => fake()->numberBetween(1, 3), ];
         });
     }

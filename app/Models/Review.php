@@ -9,11 +9,13 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'review', 'rating' ];
+    protected $fillable
+        = [ 'review',
+            'rating' ]; //_Fillable es una propiedad de los modelos que permite especificar que algunas propiedades pueden ser asignadas masivamente
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class); //Define la inversa de hasMany del modelo de Books, indicando que cada review pertenece a 1 book
     }
 
     protected static function booted()
