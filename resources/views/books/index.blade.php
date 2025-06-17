@@ -11,6 +11,25 @@
         <a href="{{ route('books.index') }}" class="btn h-10">Clear</a>
     </form>
 
+    <div class="filter-container-categories mb-2 flex">
+        @php
+            $categories = [
+                '' => 'All',
+                'scifi' => 'Sci-Fi',
+                'horror' => 'Horror',
+                'romance' => 'Romance',
+                'history' => 'History',
+                'tech' => 'Technology',
+            ]
+        @endphp
+
+        @foreach($categories as $category => $label)
+            <a href="{{ route('books.index', [...request()->query(), 'filter' => $category]) }}"
+               class="{{ request('filter') === $category || (request('filter') === null && $category === '') ? 'filter-item-active' : 'filter-item' }}">{{ $label }}</a>
+
+        @endforeach
+    </div>
+
     <div class="filter-container mb-4 flex">
         @php
             $filters = [
@@ -29,8 +48,12 @@
         @endforeach
     </div>
 
-    <nav class="mt-4">
-        {{ $books->appends(['filter' => request('filter'), 'title' => request('title')])->links() }}
+    <nav class="mt-4 mb-4">
+        @empty($books)
+            Nothing to paginate
+        @else
+            {{ $books->appends(['filter' => request('filter'), 'title' => request('title')])->links() }}
+        @endempty
     </nav>
 
     <ul>
@@ -63,4 +86,12 @@
             </li>
         @endforelse
     </ul>
+
+    <nav class="mt-4 mb-4">
+        @empty($books)
+            Nothing to paginate
+        @else
+            {{ $books->appends(['filter' => request('filter'), 'title' => request('title')])->links() }}
+        @endempty
+    </nav>
 @endsection

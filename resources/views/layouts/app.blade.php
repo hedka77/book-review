@@ -20,6 +20,10 @@
                 @apply mb-4 flex space-x-2 rounded-md bg-slate-100 p-2;
             }
 
+            .filter-container-categories {
+                @apply mb-2 flex space-x-2 rounded-md bg-gray-200 p-2;
+            }
+
             .filter-item {
                 @apply flex w-full items-center justify-center rounded-md px-4 py-2 text-center text-sm font-medium text-slate-500;
             }
