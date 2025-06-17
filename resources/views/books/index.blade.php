@@ -6,6 +6,7 @@
     <form method="GET" action="{{ route('books.index') }}" class="mb-4 flex items-center space-x-2">
         <input type="text" name="title" id="title" class="input h-10" placeholder="Search by title" value="{{ request('title') }}"/>
         <input type="hidden" name="filter" value="{{ request('filter') }}">
+        <input type="hidden" name="category" value="{{ request('category') }}">
 
         <button type="submit" class="btn h-10">Search</button>
         <a href="{{ route('books.index') }}" class="btn h-10">Clear</a>
@@ -24,9 +25,8 @@
         @endphp
 
         @foreach($categories as $category => $label)
-            <a href="{{ route('books.index', [...request()->query(), 'filter' => $category]) }}"
-               class="{{ request('filter') === $category || (request('filter') === null && $category === '') ? 'filter-item-active' : 'filter-item' }}">{{ $label }}</a>
-
+            <a href="{{ route('books.index', [...request()->query(), 'category' => $category]) }}"
+               class="{{ request('category') === $category || (request('category') === null && $category === '') ? 'filter-item-active' : 'filter-item' }}">{{ $label }}</a>
         @endforeach
     </div>
 
@@ -63,6 +63,7 @@
                     <div class="flex flex-wrap items-center justify-between">
                         <div class="w-full flex-grow sm:w-auto">
                             <a href="{{ route('books.show', $book) }}" class="book-title">{{ $book->title }}</a>
+                            <sup class="book-category">({{ $book->category }})</sup>
                             <span class="book-author">by {{ $book->author }}</span>
                         </div>
                         <div>

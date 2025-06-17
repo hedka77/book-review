@@ -21,6 +21,11 @@ class Book extends Model
         return $query->where('title', 'LIKE', '%' . $title . '%');
     }
 
+    public function scopeCategory(Builder $query, string $category): Builder
+    {
+        return $query->where('category', '=',  $category);
+    }
+
     public function scopeWithReviewsCount(Builder $query, $from = null, $to = null): Builder|QueryBuilder
     {
         return $query->withCount([ 'reviews' => fn(Builder $q) => $this->dateRangeBuilder($q, $from, $to) ])

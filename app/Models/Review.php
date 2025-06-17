@@ -18,7 +18,7 @@ class Review extends Model
         return $this->belongsTo(Book::class); //Define la inversa de hasMany del modelo de Books, indicando que cada review pertenece a 1 book
     }
 
-    protected static function booted()
+    protected static function booted() //
     {
         static::updated(fn(Review $review) => cache()->forget('book:' . $review->book_id));
         static::deleted(fn(Review $review) => cache()->forget('book:' . $review->book_id));

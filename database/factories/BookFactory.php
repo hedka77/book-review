@@ -16,9 +16,12 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        $categories = ['scifi', 'horror', 'romance', 'history', 'tech'];
+
         return [ 'title'      => fake()->sentence(3),
                  'author'     => fake()->name(),
+                 'category'   => fake()->randomElement($categories),
                  'created_at' => fake()->dateTimeBetween('-2 years'),
-                 'updated_at' => fake()->dateTimeBetween('created_at', 'now'), ];
+                 'updated_at' => fake()->dateTimeBetween('created_at', 'now')];
     }
 }

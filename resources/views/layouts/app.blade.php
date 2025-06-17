@@ -40,6 +40,10 @@
                 @apply text-lg font-semibold text-slate-800 hover:text-slate-600;
             }
 
+            .book-category {
+                @apply text-xs font-medium text-gray-400;
+            }
+
             .book-author {
                 @apply block text-slate-600;
             }
