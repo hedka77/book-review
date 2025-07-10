@@ -25,13 +25,9 @@ class ReviewController extends Controller
      */
     public function create(Request $request, Book $book)
     {
-        var_dump($request->ip());
-
         $hashKey     = $this->getRateLimiterKey('reviews', $request->ip());
         $attempts    = RateLimiter::attempts($hashKey);
         $retriesLeft = RateLimiter::retriesLeft($hashKey, 10);
-
-        dd($hashKey, $attempts, $retriesLeft);
 
         return view('books.reviews.create', [ 'book' => $book ]);
     }
@@ -41,8 +37,9 @@ class ReviewController extends Controller
      */
     public function store(Request $request, Book $book)
     {
-        $data = $request->validate([ 'review' => 'required|min:15',
-                                     'rating' => 'required|min:1|max:5|integer' ]);
+        $data = $request->validate([
+                                       'review' => 'required|min:15', 'rating' => 'required|min:1|max:5|integer'
+                                   ]);
 
         $book->reviews()->create($data);
 

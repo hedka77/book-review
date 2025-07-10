@@ -10,8 +10,9 @@ class Review extends Model
     use HasFactory;
 
     protected $fillable
-        = [ 'review',
-            'rating' ]; //_Fillable es una propiedad de los modelos que permite especificar que algunas propiedades pueden ser asignadas masivamente
+        = [
+            'review', 'rating'
+        ]; //_Fillable es una propiedad de los modelos que permite especificar que algunas propiedades pueden ser asignadas masivamente
 
     public function book()
     {

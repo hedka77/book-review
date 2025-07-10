@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-10 text-2x1">Add a review for "{{ $book->title }}"</h1>
+    <h1 class="mb-10 text-2xl">Add a review for "{{ $book->title }}"</h1>
 
     <form action="{{ route('books.reviews.store', $book) }}" method="POST">
         @csrf

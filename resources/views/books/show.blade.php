@@ -9,7 +9,7 @@
             <div class="book-rating flex items-center">
                 <div class="mr-2 text-sm font-medium text-slate-700">
                     {{ number_format($book->reviews_avg_rating, 1) }}
-                    <x-star-rating :rating="$book->reviews_avg_rating"/>
+                    <x-star-rating :rating="$book->reviews_avg_rating"/> {{-- el componente debe empezar con x- y el nombre del componente en kebab case name. Para pasar data al componente se colocan atributos usando el caracter : como prefijo --}}
                 </div>
                 <span class="book-review-count text-sm text-gray-500">
                     {{ $book->reviews_count }} {{ Str::plural('review', 5) }}

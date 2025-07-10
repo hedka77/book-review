@@ -69,7 +69,7 @@
                         <div>
                             <div class="book-rating">
                                 {{ number_format($book->reviews_avg_rating, 1) }}
-                                <x-star-rating :rating="$book->reviews_avg_rating"/>
+                                <x-star-rating :rating="$book->reviews_avg_rating"/> {{-- el componente debe empezar con x- y el nombre del componente en kebab case name. Para pasar data al componente se colocan atributos usando el caracter : como prefijo --}}
                             </div>
                             <div class="book-review-count">
                                 out of {{ $book->reviews_count }} {{ Str::plural('review', $book->reviews_count) }}
